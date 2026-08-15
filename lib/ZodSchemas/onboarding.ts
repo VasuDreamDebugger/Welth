@@ -4,10 +4,15 @@ export const onboardingSchema = z.object({
   startingBalance: z
     .string()
     .min(1, "Please enter a starting balance.")
-    .refine((v) => {
+    .regex(/^[0-9,]+(\.[0-9]+)?$/, "Please enter a valid starting balance.")
+    .transform((v) => {
       const parsed = parseFloat(v.replace(/,/g, ""));
-      return !Number.isNaN(parsed) && parsed > 0;
-    }, "Please enter a valid starting balance."),
+      if (Number.isNaN(parsed) || parsed <= 0) {
+        throw new Error("Please enter a valid starting balance.");
+      }
+      return parsed;
+    }),
 });
 
-export type OnboardingFormValues = z.infer<typeof onboardingSchema>;
+export type OnboardingFormValues = z.input<typeof onboardingSchema>;
+export type OnboardingFormOutput = z.output<typeof onboardingSchema>;

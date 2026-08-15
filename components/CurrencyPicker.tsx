@@ -20,8 +20,7 @@ export const ALL_CURRENCIES: CurrencyEntry[] = cc
     code,
     name: cc.code(code)?.currency ?? code,
     symbol: getSymbol(code) ?? code,
-  }))
-  .filter((c) => c.symbol !== c.code); // drop ones with no real symbol
+  }));
 
 export function CurrencyPicker({
   visible,
@@ -50,6 +49,7 @@ export function CurrencyPicker({
       visible={visible}
       animationType="slide"
       presentationStyle="pageSheet"
+      onRequestClose={onClose}
     >
       <SafeAreaView className="flex-1 bg-brand-body" edges={["top"]}>
         <View className="flex-row items-center px-5 pt-3 pb-2 gap-3">
