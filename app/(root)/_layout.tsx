@@ -1,9 +1,9 @@
-import { useUserSync } from "@/hooks/useUserSync";
-import { useUserStore } from "@/store/userStore";
 import { useAuth } from "@clerk/expo";
 import { Redirect, Slot, usePathname } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
+import { useUserSync } from "../../hooks/useUserSync";
+import { useUserStore } from "../../store/userStore";
 
 export default function RootGroupLayout() {
   const { isSignedIn, isLoaded } = useAuth();

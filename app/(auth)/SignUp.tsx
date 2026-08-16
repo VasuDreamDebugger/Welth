@@ -1,8 +1,3 @@
-import {
-  codeSchema,
-  SignUpFormValues,
-  signUpSchema,
-} from "@/lib/ZodSchemas/auth";
 import { useAuth, useSignUp } from "@clerk/expo";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useRouter } from "expo-router";
@@ -17,6 +12,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import {
+  codeSchema,
+  SignUpFormValues,
+  signUpSchema,
+} from "../../lib/ZodSchemas/auth";
 
 export default function SignUpScreen() {
   const { signUp, errors, fetchStatus } = useSignUp();
@@ -273,7 +273,7 @@ export default function SignUpScreen() {
         <TouchableOpacity
           onPress={handleSubmit(onSignUpPress)}
           disabled={isLoading}
-          className="w-full bg-brand-blue py-4 rounded-xl items-center mb-4"
+          className="w-full bg-blue-500 py-4 rounded-xl items-center mb-4"
         >
           {isLoading ? (
             <ActivityIndicator color="white" />

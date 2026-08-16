@@ -1,11 +1,3 @@
-import { ALL_CURRENCIES, CurrencyPicker } from "@/components/CurrencyPicker";
-import { useSupabase } from "@/hooks/useSupabase";
-import {
-  OnboardingFormValues,
-  OnboardingFormOutput,
-  onboardingSchema,
-} from "@/lib/ZodSchemas/onboarding";
-import { useUserStore } from "@/store/userStore";
 import { useUser } from "@clerk/expo";
 import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +13,17 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  ALL_CURRENCIES,
+  CurrencyPicker,
+} from "../../components/CurrencyPicker";
+import { useSupabase } from "../../hooks/useSupabase";
+import {
+  OnboardingFormOutput,
+  OnboardingFormValues,
+  onboardingSchema,
+} from "../../lib/ZodSchemas/onboarding";
+import { useUserStore } from "../../store/userStore";
 
 export default function OnboardingScreen() {
   const { user } = useUser();
@@ -77,16 +80,18 @@ export default function OnboardingScreen() {
         return;
       }
 
-      const { error: txError } = await authSupabase.from("transactions").insert({
-        user_id: user.id,
-        account_id: defaultAccount.id,
-        type: "INCOME",
-        amount: startingBalance,
-        category: "other_income",
-        description: "Starting balance",
-        date: new Date().toISOString(),
-        input_method: "MANUAL",
-      });
+      const { error: txError } = await authSupabase
+        .from("transactions")
+        .insert({
+          user_id: user.id,
+          account_id: defaultAccount.id,
+          type: "INCOME",
+          amount: startingBalance,
+          category: "other_income",
+          description: "Starting balance",
+          date: new Date().toISOString(),
+          input_method: "MANUAL",
+        });
 
       if (txError) {
         setError("Something went wrong. Please try again.");

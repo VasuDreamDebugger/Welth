@@ -1,7 +1,9 @@
+import { queryClient } from "@/lib/query/client";
 import { ClerkProvider } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Slot } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "../global.css";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -12,17 +14,12 @@ if (!publishableKey) {
 
 export default function RootLayout() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-        <Slot />
-      </ClerkProvider>
-    </SafeAreaView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+          <Slot />
+        </ClerkProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
-  // return (
-  //   <SafeAreaView style={{ flex: 1 }}>
-  //     <Stack>
-  //       <Stack.Screen name="index" options={{ headerShown: false }} />
-  //     </Stack>
-  //   </SafeAreaView>
-  // );
 }

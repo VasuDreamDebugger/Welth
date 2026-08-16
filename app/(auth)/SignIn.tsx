@@ -1,8 +1,3 @@
-import {
-  codeSchema,
-  SignInFormValues,
-  signInSchema,
-} from "@/lib/ZodSchemas/auth";
 import { useSignIn } from "@clerk/expo";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useRouter } from "expo-router";
@@ -17,6 +12,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import {
+  codeSchema,
+  SignInFormValues,
+  signInSchema,
+} from "../../lib/ZodSchemas/auth";
 
 export default function SignIn() {
   const { signIn, errors, fetchStatus } = useSignIn();
@@ -233,7 +233,7 @@ export default function SignIn() {
         <TouchableOpacity
           onPress={handleSubmit(onSignInPress)}
           disabled={isLoading}
-          className="w-full bg-brand-blue py-4 rounded-xl items-center mb-4"
+          className="w-full bg-blue-400 py-4 rounded-xl items-center mb-4"
         >
           {isLoading ? (
             <ActivityIndicator color="white" />

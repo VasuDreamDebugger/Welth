@@ -14,13 +14,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export type CurrencyEntry = { code: string; name: string; symbol: string };
 
-export const ALL_CURRENCIES: CurrencyEntry[] = cc
-  .codes()
-  .map((code) => ({
-    code,
-    name: cc.code(code)?.currency ?? code,
-    symbol: getSymbol(code) ?? code,
-  }));
+export const ALL_CURRENCIES: CurrencyEntry[] = cc.codes().map((code) => ({
+  code,
+  name: cc.code(code)?.currency ?? code,
+  symbol: getSymbol(code) ?? code,
+}));
 
 export function CurrencyPicker({
   visible,
