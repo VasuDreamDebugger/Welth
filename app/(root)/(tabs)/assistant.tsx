@@ -4,18 +4,20 @@ import { askAssistant } from "@/lib/services/assistant";
 import { useUserStore } from "@/store/userStore";
 import { useUser } from "@clerk/expo";
 import { Feather } from "@expo/vector-icons";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useState } from "react";
 import {
   ActivityIndicator,
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 type ChatMessage = {
   id: string;
@@ -60,6 +62,8 @@ export default function AssistantScreen() {
   const currency = useUserStore((s) => s.currency);
   const { refetch: refetchTransactions } = useTransactionsQuery();
   const { refetch: refetchBudget } = useBudgetQuery();
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
 
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
@@ -105,49 +109,48 @@ export default function AssistantScreen() {
         <Text className="text-brand-bg text-xl font-semibold">Assistant</Text>
       </View>
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={Platform.OS === "ios" ? -70 : 0}
-        className="flex-1"
+      <KeyboardAwareScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingHorizontal: 20,
+          paddingTop: 8,
+          paddingBottom: 12,
+        }}
+        bottomOffset={tabBarHeight + insets.bottom + 8}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
-        <FlatList
-          data={messages}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <MessageBubble message={item} />}
-          contentContainerStyle={{
-            paddingHorizontal: 20,
-            paddingTop: 8,
-            paddingBottom: 12,
-          }}
-          ListFooterComponent={
-            sending ? (
-              <View className="self-start mb-3 bg-white border border-[#E8E6DF] rounded-2xl px-3.5 py-2.5">
-                <ActivityIndicator size="small" color="#4A9EFF" />
-              </View>
-            ) : null
-          }
-        />
+        <View className="flex-1">
+          {messages.map((message) => (
+            <MessageBubble key={message.id} message={message} />
+          ))}
 
-        {messages.length <= 1 && (
-          <View className="px-5 pb-2 gap-2">
-            {SUGGESTED_PROMPTS.map((prompt) => (
-              <TouchableOpacity
-                key={prompt}
-                onPress={() => sendMessage(prompt)}
-                className="bg-white rounded-xl border border-[#E8E6DF] px-3.5 py-2.5 self-start"
-              >
-                <Text className="text-brand-text-secondary text-xs">
-                  {prompt}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
+          {sending ? (
+            <View className="self-start mb-3 bg-white border border-[#E8E6DF] rounded-2xl px-3.5 py-2.5">
+              <ActivityIndicator size="small" color="#4A9EFF" />
+            </View>
+          ) : null}
 
-        {/* fixed padding to clear the native tab bar - simplest fix, adjust the 90 if it still overlaps on your device */}
+          {messages.length <= 1 && (
+            <View className="pb-2 gap-2">
+              {SUGGESTED_PROMPTS.map((prompt) => (
+                <TouchableOpacity
+                  key={prompt}
+                  onPress={() => sendMessage(prompt)}
+                  className="bg-white rounded-xl border border-[#E8E6DF] px-3.5 py-2.5 self-start"
+                >
+                  <Text className="text-brand-text-secondary text-xs">
+                    {prompt}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
+
         <View
-          className="flex-row items-center gap-2 px-5 pt-2"
-          style={{ paddingBottom: 90 }}
+          className="flex-row items-center gap-2 pt-2"
+          style={{ paddingBottom: Math.max(insets.bottom + 12, 12) }}
         >
           <TextInput
             value={input}
@@ -162,13 +165,13 @@ export default function AssistantScreen() {
           <TouchableOpacity
             onPress={() => sendMessage(input)}
             disabled={sending}
-            className="w-11 h-11 rounded-full bg-brand-bg items-center justify-center"
+            className="w-11 h-11 rounded-full bg-gray-200 items-center justify-center"
             style={{ opacity: sending ? 0.6 : 1 }}
           >
-            <Feather name="arrow-up" size={18} color="#fff" />
+            <Feather name="arrow-up" size={18} color="#58ff20" />
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }

@@ -2,7 +2,6 @@ import { AIActionCard } from "@/components/AIActionCard";
 import { CalendarPicker } from "@/components/CalendarPicker";
 import { PillGroup } from "@/components/PillGroup";
 import { ReceiptScannerModal } from "@/components/ReceiptScannerModal";
-import { VoiceRecorderModal } from "@/components/VoiceRecorderModal";
 import {
   CategoryKey,
   EXPENSE_CATEGORIES,
@@ -11,15 +10,7 @@ import {
 import { AI_GRADIENT, AI_GRADIENT_REVERSE } from "@/constants/theme";
 import { useCreateTransaction } from "@/hooks/mutations/useTransactionMutations";
 import { useAccountsQuery } from "@/hooks/queries/useAccountsQuery";
-import {
-  TransactionFormValues,
-  transactionSchema,
-} from "@/lib/ZodSchemas/transaction";
 import { Account } from "@/lib/services/accounts";
-import {
-  ExtractedTransaction,
-  extractTransactionFromReceipt,
-} from "@/lib/services/extractTransaction";
 import { InputMethod } from "@/lib/services/transactions";
 import { useUser } from "@clerk/expo";
 import { Feather } from "@expo/vector-icons";
@@ -40,6 +31,15 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { VoiceRecorderModal } from "../../../components/VoiceRecorderModal";
+import {
+  ExtractedTransaction,
+  extractTransactionFromReceipt,
+} from "../../../lib/services/extractTransaction";
+import {
+  TransactionFormValues,
+  transactionSchema,
+} from "../../../lib/ZodSchemas/transaction";
 
 const TYPE_OPTIONS = [
   { key: "EXPENSE" as const, label: "Expense" },
@@ -401,7 +401,7 @@ export default function AddTransactionScreen() {
             <TouchableOpacity
               onPress={handleSubmit(onSubmit)}
               disabled={saving}
-              className="bg-brand-bg rounded-xl py-4 items-center mb-2"
+              className="bg-green-500 rounded-xl py-4 items-center mb-2"
               activeOpacity={0.85}
             >
               <Text className="text-white text-sm font-semibold">

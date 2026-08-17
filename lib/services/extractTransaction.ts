@@ -31,7 +31,7 @@ async function callGemini(
   inlineData: { mimeType: string; data: string },
 ) {
   const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
-  
+
   if (!apiKey) throw new Error("Missing EXPO_PUBLIC_GEMINI_API_KEY");
 
   const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {

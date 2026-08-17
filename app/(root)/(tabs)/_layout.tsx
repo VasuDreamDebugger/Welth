@@ -10,7 +10,7 @@ export default function TabLayout() {
         tabBarInactiveTintColor: "#5C5F68",
         tabBarStyle: {
           backgroundColor: "#FFFFFF",
-          borderTopColor: "#E8E6DF",
+          borderTopColor: "#ebe8df",
           paddingTop: 4,
           height: 70,
         },
@@ -57,7 +57,7 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="user" size={size} color={color} />
+            <Feather name="user-plus" size={size} color={color} />
           ),
         }}
       />

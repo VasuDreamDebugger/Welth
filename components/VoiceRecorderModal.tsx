@@ -1,9 +1,5 @@
 import { GradientIconButton } from "@/components/GradientIconButton";
 import { AI_GRADIENT, COLORS, RECORDING_GRADIENT } from "@/constants/theme";
-import {
-  ExtractedTransaction,
-  extractTransactionFromVoice,
-} from "@/lib/services/extractTransaction";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   RecordingPresets,
@@ -24,6 +20,10 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
+import {
+  ExtractedTransaction,
+  extractTransactionFromVoice,
+} from "../lib/services/extractTransaction";
 
 type Status = "idle" | "recording" | "processing" | "error";
 
